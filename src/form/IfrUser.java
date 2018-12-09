@@ -12,10 +12,8 @@ public class IfrUser extends javax.swing.JInternalFrame {
     KoneksiDB getCnn = new KoneksiDB();
     Connection _Cnn;
     String sqlselect, sqlinsert, sqldelete;
-    private DefaultTableModel tbuser;
+    private DefaultTableModel tbluser;
     String vid_user, vnama_user, vpass, vlev_user;
-    
-
     
     public IfrUser() {
         initComponents();
@@ -47,14 +45,12 @@ public class IfrUser extends javax.swing.JInternalFrame {
         txtIdUser.setEnabled(true);
         txtNmUser.setEnabled(true);
         btnSimpan.setEnabled(true);
-        btnHapus.setEnabled(true);
     }
     
     private void setTabel(){
         String[] kolom1 = {"ID. User", "Nama User", "Password", "Level User"};
-        tbuser = new DefaultTableModel(null, kolom1){
+        tbluser = new DefaultTableModel(null, kolom1){
             Class[] types = new Class[]{
-                java.lang.String.class,
                 java.lang.String.class,
                 java.lang.String.class,
                 java.lang.String.class,
@@ -64,12 +60,13 @@ public class IfrUser extends javax.swing.JInternalFrame {
                 return types [columnIndex];
             }
             
+            //agar tabel tidak bisa diedit
             public boolean isCellEditable(int row, int co1){
-                int cola = tbuser.getColumnCount();
+                int cola = tbluser.getColumnCount();
                 return (co1 < cola) ? false : true;
             }
         };
-        tbDataUser.setModel(tbuser);
+        tbDataUser.setModel(tbluser);
         tbDataUser.getColumnModel().getColumn(0).setPreferredWidth(75);
         tbDataUser.getColumnModel().getColumn(1).setPreferredWidth(75);
         tbDataUser.getColumnModel().getColumn(2).setPreferredWidth(75);
@@ -78,9 +75,9 @@ public class IfrUser extends javax.swing.JInternalFrame {
     }
     
     private void clearTabel(){
-        int row = tbuser.getRowCount();
+        int row = tbluser.getRowCount();
         for(int i = 0; i < row; i++){
-            tbuser.removeRow(0);
+            tbluser.removeRow(0);
         }
     }
     
@@ -99,7 +96,7 @@ public class IfrUser extends javax.swing.JInternalFrame {
                 vpass = res.getString(3);
                 vlev_user = res.getString(4);
                 Object[] data = {vid_user, vnama_user, vpass, vlev_user};
-                tbuser.addRow(data);
+                tbluser.addRow(data);
             }
             lbRecord.setText("Record : "+tbDataUser.getRowCount());
         }catch(SQLException ex){
@@ -158,7 +155,7 @@ public class IfrUser extends javax.swing.JInternalFrame {
         if(framesize.width > screensize.width){
             framesize.width = screensize.width;
         }
-        this.setLocation(screensize.width - framesize.width/2, 
+        this.setLocation((screensize.width - framesize.width)/2, 
                 (screensize.height - framesize.height)/2);
     }
     @SuppressWarnings("unchecked")
@@ -197,12 +194,12 @@ public class IfrUser extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setTitle("Form User");
-        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/image/Admin-Schoolar-Icon.png"))); // NOI18N
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/iconpolban.png"))); // NOI18N
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true), "Input Data"));
         jPanel1.setOpaque(false);
 
-        cmbLevUser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "---Pilih---", "Administrator", "User" }));
+        cmbLevUser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "---Pilih---", "Administrator", "Staf Akademik", "Staf Kemahasiswaan", "Staf Kepegawaian", "Staf Bag. Pembayaran UKT" }));
         cmbLevUser.setToolTipText("");
         cmbLevUser.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true), "Level User"));
         cmbLevUser.setOpaque(false);
@@ -319,7 +316,7 @@ public class IfrUser extends javax.swing.JInternalFrame {
         lbRecord.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lbRecord.setText("Record : 0");
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/logo.png"))); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/iconpolban.png"))); // NOI18N
         jLabel2.setText("jLabel2");
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -336,25 +333,20 @@ public class IfrUser extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(38, 38, 38)
-                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(lbRecord, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(31, 31, 31))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap())))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lbRecord, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -368,7 +360,7 @@ public class IfrUser extends javax.swing.JInternalFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addComponent(lbRecord)
                 .addGap(5, 5, 5))
         );
